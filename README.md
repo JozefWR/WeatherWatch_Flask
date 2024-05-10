@@ -25,7 +25,7 @@ WeatherWatch_Flask to interaktywna aplikacja webowa zbudowana w oparciu o Flask,
 ![Strona główna aplikacji_po_wpisaniu](https://github.com/JozefWR/WeatherWatch_Flask/assets/166382259/2013e985-6e75-4abf-b39b-4000cec3c44a)
 ![Prognoza godzinowa](https://github.com/JozefWR/WeatherWatch_Flask/assets/166382259/5f2c4d0b-0428-4eb6-8f9a-1014bc4925e8)
 ![Prognoza uśredniona](https://github.com/JozefWR/WeatherWatch_Flask/assets/166382259/af56a843-4927-4f8e-8399-9dec70e3aa7d)
-![Jakość powietrza](https://github.com/JozefWR/WeatherWatch_Flask/assets/166382259/6ea0275d-8baa-4f65-9d6f-1c6432595366)
+![Jakość powietrza](https://github.com/JozefWR/WeatherWatch_Flask/assets/166382259/addde6bb-26f6-475d-a026-1a2b7b095706)
 ![Wykres godzinowy](https://github.com/JozefWR/WeatherWatch_Flask/assets/166382259/e7966041-4dd6-42c6-817c-9288ba1b4ffa)
 ![Wykres uśrednionej prognozy](https://github.com/JozefWR/WeatherWatch_Flask/assets/166382259/600d74fb-8f7f-4d96-84b9-7c2961a217ab)
 
