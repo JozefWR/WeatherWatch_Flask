@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Uśredniona prognoza pogody</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <small class="text-muted">Aktualna data: {{ current_time }}</small>
+      </div>
+    </div>
+    <h2 class="text-center">Uśredniona prognoza pogody dla: {{ miasto }}</h2>
+
+    <button id="pokazWykresBtn" class="btn btn-primary mb-3">Pokaż wykres</button>
+    <button id="ukryjWykresBtn" class="btn btn-secondary mb-3" style="display:none;">Ukryj wykres</button>
+
+    <div>
+      <canvas id="wykresTemperatur" style="display:none;"></canvas>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Średnia temperatura (°C)</th>
+              <th>Opis z południa</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for data, temperatura in srednie_temperatury.items() %}
+            <tr>
+              <td>{{ data }}</td>
+              <td>{{ temperatura | round(2) }}</td>
+              <td>{{ opisy_poludniowe.get(data, 'Brak danych') }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Powrót do strony głównej</a>
+  </div>
+
+ 
+  <script>
+    var srednieTemperaturyLabels = {{ srednie_temperatury.keys() | list | tojson | safe }};
+    var srednieTemperaturyData = {{ srednie_temperatury.values() | list | tojson | safe }};
+  </script>
+  
+  <script>
+      document.getElementById('pokazWykresBtn').addEventListener('click', function() {
+          document.getElementById('wykresTemperatur').style.display = 'block';
+          this.style.display = 'none';
+          document.getElementById('ukryjWykresBtn').style.display = 'inline';
+          rysujWykres();
+      });
+  
+      document.getElementById('ukryjWykresBtn').addEventListener('click', function() {
+          document.getElementById('wykresTemperatur').style.display = 'none';
+          this.style.display = 'none';
+          document.getElementById('pokazWykresBtn').style.display = 'inline';
+      });
+  
+      function rysujWykres() {
+          var ctx = document.getElementById('wykresTemperatur').getContext('2d');
+          var wykresTemperatur = new Chart(ctx, {
+              type: 'line',
+              data: {
+                  labels: srednieTemperaturyLabels,
+                  datasets: [{
+                      label: 'Średnia temperatura',
+                      data: srednieTemperaturyData,
+                      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                      borderColor: 'rgba(255, 99, 132, 1)',
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  scales: {
+                      y: {
+                          beginAtZero: false
+                      }
+                  }
+              }
+          });
+      }
+  </script>
+</body>
+</html>

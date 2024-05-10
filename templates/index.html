@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aplikacja Pogodowa</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <small class="text-muted">Aktualna data: {{ current_time }}</small>
+      </div>
+    </div>
+    <h1 class="text-center">Sprawdź pogodę</h1>
+    <div class="card mt-3">
+      <div class="card-body">
+        <form method="post" class="form-inline justify-content-center">
+          <div class="form-group mx-sm-3 mb-2">
+            <label for="miasto" class="sr-only">Miasto:</label>
+            <input type="text" class="form-control" id="miasto" name="miasto" placeholder="Wpisz miasto">
+          </div>
+          <button type="submit" class="btn btn-primary mb-2">Pobierz pogodę</button>
+        </form>
+      </div>
+    </div>
+    {% if dane_pogodowe %}
+      <div class="mt-3 text-center">
+        {% if dane_pogodowe.error %}
+          <div class="alert alert-danger" role="alert">
+            {{ dane_pogodowe.error }}
+          </div>
+        {% else %}
+          <div class="alert alert-info" role="alert">
+            <strong>Pogoda dla: {{ dane_pogodowe.name }}</strong>
+            <p>Temperatura: {{ dane_pogodowe.main.temp }}°C</p>
+            <p>Opis: {{ dane_pogodowe.weather[0].description }}</p>
+            <p>Prędkość wiatru: {{ predkosc_wiatru }} km/h</p>
+            <p>Wschód słońca: {{ wschod_slonca }}</p>
+            <p>Zachód słońca: {{ zachod_slonca }}</p>
+            <div class="mt-4">
+              <a href="{{ url_for('pogoda_godzinowa', miasto=dane_pogodowe.name) }}" class="btn btn-info">Pogoda godzinowa</a>
+              <a href="{{ url_for('pogoda_usredniona', miasto=dane_pogodowe.name) }}" class="btn btn-success">Uśredniona prognoza</a>
+              <a href="{{ url_for('jakosc_powietrza', miasto=dane_pogodowe.name) }}" class="btn btn-info">Sprawdź jakość powietrza</a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+    <div class="mt-3 text-center">
+      <strong>Imieniny dzisiaj:</strong> {{ imieniny }}
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.9.11/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

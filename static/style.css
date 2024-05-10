@@ -1,0 +1,21 @@
+body {
+  background-color: #f8f9ff;
+}
+.container {
+  padding-top: 40px;
+}
+.card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0,0,0,.05);
+}
+.text-muted {
+  font-size: 0.85rem;
+}
+.form-control {
+  border-radius: 0.25rem;
+}
+.btn-primary {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}

@@ -1,0 +1,15 @@
+{
+    "name": "Python: Flask",
+    "type": "python",
+    "request": "launch",
+    "module": "flask",
+    "env": {
+        "FLASK_APP": "weather_app.py",
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "1" // Włącz debugowanie, ustawiając na "1"
+    },
+    "args": [
+        "run"
+    ],
+    "jinja": true
+}

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prognoza godzinowa dla: {{ miasto }}</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12 text-right">
+        <small class="text-muted">Aktualna data: {{ current_time }}</small>
+      </div>
+    </div>
+    <h2 class="text-center">Prognoza godzinowa dla: {{ miasto }}</h2>
+
+    <button id="pokazWykresGodzinowyBtn" class="btn btn-primary mb-3">Pokaż wykres godzinowy</button>
+    <button id="ukryjWykresGodzinowyBtn" class="btn btn-secondary mb-3" style="display:none;">Ukryj wykres</button>
+
+    <div>
+      <canvas id="wykresGodzinowyTemperatur" style="display:none;"></canvas>
+    </div>
+
+    <div class="card mt-3">
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Data i godzina</th>
+              <th>Temperatura (°C)</th>
+              <th>Opis</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for prognoza in dane_pogodowe.list %}
+            <tr>
+              <td>{{ prognoza.dt_txt }}</td>
+              <td>{{ prognoza.main.temp }}</td>
+              <td>{{ prognoza.weather[0].description }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Powrót do strony głównej</a>
+  </div>
+
+  <script>
+    var pokazWykresBtn = document.getElementById('pokazWykresGodzinowyBtn');
+    var ukryjWykresBtn = document.getElementById('ukryjWykresGodzinowyBtn');
+    var wykresGodzinowyTemperatur = document.getElementById('wykresGodzinowyTemperatur');
+    
+    pokazWykresBtn.addEventListener('click', function() {
+      wykresGodzinowyTemperatur.style.display = 'block';
+      this.style.display = 'none';
+      ukryjWykresBtn.style.display = 'inline';
+      rysujWykresGodzinowy();
+    });
+
+    ukryjWykresBtn.addEventListener('click', function() {
+      wykresGodzinowyTemperatur.style.display = 'none';
+      pokazWykresBtn.style.display = 'inline';
+      this.style.display = 'none';
+    });
+
+    function rysujWykresGodzinowy() {
+      var ctx = wykresGodzinowyTemperatur.getContext('2d');
+      var labels = {{ daty_godziny | tojson | safe }};
+      var data = {{ temperatury | tojson | safe }};
+      
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Temperatura (°C)',
+            data: data,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: false
+              }
+            }]
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

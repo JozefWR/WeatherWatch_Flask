@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jakość powietrza w {{ miasto }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12 text-right">
+              <small class="text-muted">Aktualna data: {{ current_time }}</small>
+            </div>
+          </div>
+        <h2>Jakość powietrza w {{ miasto }}</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Składnik</th>
+                    <th>Stężenie [μg/m3]</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in dane_powietrza['list'][0]['components'].items() %}
+                <tr>
+                    <td>{{ loop.index }}</td> 
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Powrót do strony głównej</a>
+    </div>
+</body>
+</html>
